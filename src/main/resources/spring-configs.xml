@@ -1,0 +1,5 @@
+<!-- 配置视图解析器，具体实现类为：InternalResourceViewResolver（内部资源视图解析器） -->
+<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="Prefix" value="/WEB-INF/views/"/>
+    <property name="Suffix" value=".jsp"/>
+</bean>

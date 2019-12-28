@@ -1,0 +1,42 @@
+//操作Session的重要过滤器，维护者session的信息
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
+//操作SecurityContext与Spring异步通信，与全局spirng容器进行交互
+import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
+//操作请求头添加信息，可以在http标签中使用标签，限制于JSP页面
+import org.springframework.security.web.header.HeaderWriterFilter;
+
+//跨域请求过滤器
+import org.springframework.security.web.csrf.CsrfFilter;
+
+//退出过滤器,清除认证信息
+import org.springframework.security.web.authentication.logout.LogoutFilter;
+
+//认证操作全靠这个过滤器，默认匹配URL为/login
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+//如果没有在配置文件中指定认证页面，则由过滤器生成一个默认页面登录
+import org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter;
+
+//如果没有在配置文件中指定退出页面，则由这个过滤器生成一个默认的退出页面
+import org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter;
+
+//过滤器会自动解析HTTP请求头部名字为Authentication ,且以Basic开头的头信息。
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
+//内部缓存HttpServletRequest
+import org.springframework.security.web.savedrequest.RequestCacheAwareFilter;
+
+//对ServletRequest进行了一次包装，使得request具有更加丰富的API
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter;
+
+//匿名用户进行权限控制
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
+
+//SecurityContextRepository限制同一用户开启多个会话的数量
+import org.springframework.security.web.session.SessionManagementFilter;
+
+//异常处理机制
+import org.springframework.security.web.access.ExceptionTranslationFilter;
+
+//获取用户权限的核心过滤器
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
