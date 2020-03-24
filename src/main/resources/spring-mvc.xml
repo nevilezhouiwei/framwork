@@ -4,11 +4,14 @@
              xmlns:beans="http://www.springframework.org/schema/beans"
              xmlns:context="http://www.springframework.org/schema/context"
              xmlns:mvc="http://www.springframework.org/schema/mvc"
+             xmlns:security="http://www.springframework.org/schema/security"
              xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc
-		http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+		http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd">
 
     <!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 
@@ -19,14 +22,27 @@
     <resources mapping="/img/**" location="/img/" />
     <resources mapping="/pages/**" location="/pages/" />
     <resources mapping="/plugins/**" location="/plugins/"/>
-    <context:component-scan base-package="com.nevile" />
+    <context:component-scan base-package="com.nevile" >
+        <!--<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>-->
+    </context:component-scan>
     <mvc:annotation-driven/>
     <!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
     <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <beans:property name="prefix" value="/WEB-INF/" />
+        <beans:property name="prefix" value="/pages/" />
         <beans:property name="suffix" value=".jsp" />
     </beans:bean>
 
 
     <mvc:default-servlet-handler/>
+
+
+    <!--
+开启权限控制注解支持
+jsr250-annotations="enabled"表示支持jsr250-api的注解，需要jsr250-api的jar包
+pre-post-annotations="enabled"表示支持spring表达式注解
+secured-annotations="enabled"这才是SpringSecurity提供的注解
+-->
+    <security:global-method-security jsr250-annotations="enabled"
+                                     pre-post-annotations="enabled"
+                                     secured-annotations="enabled"/>
 </beans:beans>

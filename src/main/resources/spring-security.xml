@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:security="http://www.springframework.org/schema/security"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	    http://www.springframework.org/schema/beans/spring-beans.xsd
-	    http://www.springframework.org/schema/context
-	    http://www.springframework.org/schema/context/spring-context.xsd
-	    http://www.springframework.org/schema/aop
-	    http://www.springframework.org/schema/aop/spring-aop.xsd
-	    http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx.xsd
-        http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/security
         http://www.springframework.org/schema/security/spring-security.xsd">
 
@@ -24,6 +12,7 @@
     <security:http pattern="/css/**" security="none"/>
     <security:http pattern="/img/**" security="none"/>
     <security:http pattern="/plugins/**" security="none"/>
+    <security:http pattern="/failer.jsp" security="none"/>
     <!-- 配置springSecurty-->
     <!--
     auto-config:自动加载springSecurity的配置文件
@@ -40,7 +29,7 @@
     access="hasAnyRole('ROLE_USER')"  可以配置多个角色，拥有一个其中的角色就可以访问
         -->
 
-        <security:intercept-url pattern="/**" access="hasAnyRole('ROLE_USER')"/>
+        <!--<security:intercept-url pattern="/**" access="hasAnyRole('ROLE_USER')"/>  -->
 
 
         <!--配置自定义登录页面，以表单形式-->
@@ -57,7 +46,7 @@
                                     login-page="/login.jsp"
                                     login-processing-url="/login"
                                     default-target-url="/index.jsp"
-                                    authentication-failure-url="/failed.jsp"/>
+                                    authentication-failure-url="/failer.jsp"/>
         <!--配置退出信息-->
         <!--
         logout-url="/logout"  退出URL
@@ -68,18 +57,32 @@
 
         <!-- csrf 拦截关闭 表单中提交的方法一定要用 post 请求方式 -->
         <!--<security:csrf disabled="true"/>-->
+        <!--<security:remember-me token-validity-seconds="60"/>-->
+
+        <security:remember-me data-source-ref="dataSource"
+                              token-validity-seconds="60"
+                              remember-me-parameter="remember-me"/>
+
+        <!--403异常处理-->
+        <security:access-denied-handler error-page="/403.jsp"/>
 
     </security:http>
     <!--模拟内存用户-->
     <!--
     springSecurity默认加密认证 password="{noop}user不加密认证
     -->
-    <security:authentication-manager>
+<!--    <security:authentication-manager>
         <security:authentication-provider>
             <security:user-service>
                 <security:user name="user" authorities="ROLE_USER" password="{noop}user"/>
                 <security:user name="admin" authorities="ROLE_ADMIN" password="{noop}admin"/>
             </security:user-service>
+        </security:authentication-provider>
+    </security:authentication-manager>-->
+<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
+    <security:authentication-manager>
+        <security:authentication-provider user-service-ref="userServiceImpl">
+            <security:password-encoder ref="passwordEncoder"/>
         </security:authentication-provider>
     </security:authentication-manager>
 

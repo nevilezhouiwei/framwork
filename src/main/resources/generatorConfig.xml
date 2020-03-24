@@ -12,7 +12,7 @@
     <context id="context1">
         <property name="javaFileEncoding" value="UTF-8"/>
         <!-- 1：注释构建;type-可通过实现CommentGenerator接口构建自定义的注释构建类 -->
-        <commentGenerator type="com.nevile.system.utils.MyCommentGenerator"></commentGenerator>
+        <commentGenerator type="com.nevile.app.utils.MyCommentGenerator"></commentGenerator>
 
         <!--		<commentGenerator >
                     &lt;!&ndash; 是否去除自动生成的注释；true:是；false:否 &ndash;&gt;
@@ -28,17 +28,17 @@
         <jdbcConnection driverClass="${jdbc.driverClass}" connectionURL="${jdbc.connectionURL}"
                         userId="${jdbc.userId}" password="${jdbc.password}"></jdbcConnection>
         <!-- 3：生成实体类地址 -->
-        <javaModelGenerator targetPackage="com.nevile.app.login.entity"
+        <javaModelGenerator targetPackage="com.nevile.app.entity"
                             targetProject="src\main\java">
         </javaModelGenerator>
 
         <!-- 4.生成map.xml地址 -->
-        <sqlMapGenerator targetPackage="mapper.app.login"
+        <sqlMapGenerator targetPackage="mapper.app"
                          targetProject="src\main\resources">
         </sqlMapGenerator>
 
         <!-- 5.生成DAO地址 -->
-        <javaClientGenerator targetPackage="com.nevile.app.login.dao"
+        <javaClientGenerator targetPackage="com.nevile.app.dao"
                              type="XMLMAPPER" targetProject="src\main\java">
         </javaClientGenerator>
 
